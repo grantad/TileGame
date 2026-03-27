@@ -66,7 +66,7 @@ fun QueueBar(
                     contentAlignment = Alignment.Center
                 ) {
                     if (tile != null) {
-                        AnimatedVisibility(
+                        androidx.compose.animation.AnimatedVisibility(
                             visible = true,
                             enter = slideInVertically(initialOffsetY = { it }) +
                                     fadeIn() + scaleIn(initialScale = 0.5f)
