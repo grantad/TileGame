@@ -9,6 +9,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,8 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.tilegame.Tile
 import com.tilegame.theme.QueueSlotDark
 
@@ -66,15 +69,27 @@ fun QueueBar(
                     contentAlignment = Alignment.Center
                 ) {
                     if (tile != null) {
+                        // Use the non-extension AnimatedVisibility
                         androidx.compose.animation.AnimatedVisibility(
                             visible = true,
                             enter = slideInVertically(initialOffsetY = { it }) +
                                     fadeIn() + scaleIn(initialScale = 0.5f)
                         ) {
-                            Text(
-                                text = tile.emoji,
-                                fontSize = 24.sp
-                            )
+                            if (tile.emoji.startsWith("http")) {
+                                AsyncImage(
+                                    model = tile.emoji,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(2.dp),
+                                    contentScale = ContentScale.Fit
+                                )
+                            } else {
+                                Text(
+                                    text = tile.emoji,
+                                    fontSize = 24.sp
+                                )
+                            }
                         }
                     }
                 }

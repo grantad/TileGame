@@ -12,7 +12,7 @@ object GameLogic {
         "\uD83D\uDC38", // frog
         "\uD83D\uDC35", // monkey
         "\uD83D\uDC25", // chick
-        "\uD83E\uDD8A", // fox
+        "https://gamecocktraditions.com/cdn/shop/files/CADEC00543_5000x.jpg?v=1721750734", // replaced fox
         "\uD83E\uDD81", // lion
         "\uD83D\uDC2F", // tiger
         "\uD83C\uDF4E", // apple

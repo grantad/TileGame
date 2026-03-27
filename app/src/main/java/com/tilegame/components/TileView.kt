@@ -10,7 +10,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -23,10 +25,12 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil.compose.AsyncImage
 import com.tilegame.Tile
 import com.tilegame.theme.BlockedOverlay
 import com.tilegame.theme.TileWhite
@@ -93,9 +97,20 @@ fun TileView(
             .border(1.dp, Color.LightGray.copy(alpha = 0.3f), shape),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = tile.emoji,
-            fontSize = (tileSize.value * 0.55f).sp
-        )
+        if (tile.emoji.startsWith("http")) {
+            AsyncImage(
+                model = tile.emoji,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(4.dp),
+                contentScale = ContentScale.Fit
+            )
+        } else {
+            Text(
+                text = tile.emoji,
+                fontSize = (tileSize.value * 0.55f).sp
+            )
+        }
     }
 }
