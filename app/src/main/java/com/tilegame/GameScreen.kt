@@ -35,11 +35,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import coil.compose.AsyncImage
 import com.tilegame.components.BottomBar
 import com.tilegame.components.QueueBar
 import com.tilegame.components.TileView
@@ -53,6 +56,7 @@ fun GameScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val hintTileId by viewModel.hintTileId.collectAsState()
+    val showSplash by viewModel.showSplashScreen.collectAsState()
     val view = LocalView.current
 
     val skyGradient = Brush.verticalGradient(
@@ -109,12 +113,34 @@ fun GameScreen(
             )
         }
 
+        // Splash Screen
+        AnimatedVisibility(
+            visible = showSplash,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier.fillMaxSize().zIndex(10f)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFF010B1C)), // Dark blue background to match image
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = "https://i.ibb.co/C0mXN3K/palmettodevs-splash.png",
+                    contentDescription = "Splash Screen",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Fit // Fit ensures the logo and text are not cut off
+                )
+            }
+        }
+
         // Win / Game Over overlay
         AnimatedVisibility(
-            visible = uiState.gameState != GameState.PLAYING,
+            visible = uiState.gameState != GameState.PLAYING && !showSplash,
             enter = fadeIn() + scaleIn(initialScale = 0.8f),
             exit = fadeOut() + scaleOut(),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().zIndex(5f)
         ) {
             Box(
                 modifier = Modifier

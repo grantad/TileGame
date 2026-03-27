@@ -5,6 +5,7 @@ import kotlin.random.Random
 object GameLogic {
 
     val allEmojis = listOf(
+        "https://gamecocktraditions.com/cdn/shop/files/CADEC00543_5000x.jpg?v=1721750734", // Replaced fox and moved to top
         "\uD83D\uDC36", // dog
         "\uD83D\uDC31", // cat
         "\uD83D\uDC3B", // bear
@@ -12,7 +13,6 @@ object GameLogic {
         "\uD83D\uDC38", // frog
         "\uD83D\uDC35", // monkey
         "\uD83D\uDC25", // chick
-        "https://gamecocktraditions.com/cdn/shop/files/CADEC00543_5000x.jpg?v=1721750734", // replaced fox
         "\uD83E\uDD81", // lion
         "\uD83D\uDC2F", // tiger
         "\uD83C\uDF4E", // apple
@@ -69,7 +69,11 @@ object GameLogic {
     }
 
     fun generateLevel(config: LevelConfig): List<Tile> {
-        val emojis = allEmojis.shuffled().take(config.tileTypes)
+        // Ensure our new image is always included in the first few types if possible
+        val primaryEmoji = allEmojis[0]
+        val otherEmojis = allEmojis.drop(1).shuffled()
+        val emojis = (listOf(primaryEmoji) + otherEmojis).take(config.tileTypes)
+
         // Total tiles must be divisible by 3
         val adjustedTotal = (config.totalTiles / 3) * 3
 

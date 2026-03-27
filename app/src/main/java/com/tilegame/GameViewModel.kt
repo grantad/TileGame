@@ -1,10 +1,13 @@
 package com.tilegame
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class GameViewModel : ViewModel() {
 
@@ -14,7 +17,14 @@ class GameViewModel : ViewModel() {
     private var _hintTileId: MutableStateFlow<String?> = MutableStateFlow(null)
     val hintTileId: StateFlow<String?> = _hintTileId.asStateFlow()
 
+    private val _showSplashScreen = MutableStateFlow(true)
+    val showSplashScreen: StateFlow<Boolean> = _showSplashScreen.asStateFlow()
+
     init {
+        viewModelScope.launch {
+            delay(2000) // Show splash for 2 seconds
+            _showSplashScreen.value = false
+        }
         startLevel(1)
     }
 
